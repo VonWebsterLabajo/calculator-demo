@@ -15,4 +15,4 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: token ${{ secrets.TESTING_REPO_TOKEN }}" \
             https://api.github.com/repos/VonWebsterLabajo/testing-demo/dispatches \
-            -d '{"event_type": "trigger-from-calculator-demo"}'
+            -d "{\"event_type\":\"trigger-from-calculator-demo\"}"

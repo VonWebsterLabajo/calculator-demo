@@ -3,6 +3,7 @@ name: Trigger Repo B
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   notify-repo-b:

@@ -10,18 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Repo B workflow
-        env:
-          GH_TOKEN: ${{ secrets.TESTING_REPO_TOKEN }}
         run: |
-          echo "Triggering Repo B workflow..."
-          
-          # Define the event_type variable
-          # Note: We are using the correct key 'event_type' here.
-          EVENT_TYPE="trigger-from-calculator-demo"
-          
-          # Use direct JSON injection, which is the most reliable method
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: token ${GH_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: token ${{ secrets.TESTING_REPO_TOKEN }}" \
             https://api.github.com/repos/VonWebsterLabajo/testing-demo/dispatches \
-            -d '{"event_type": "'"${EVENT_TYPE}"'"}'
+            -d '{"event_type": "trigger-from-calculator-demo"}'

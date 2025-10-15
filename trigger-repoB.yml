@@ -3,6 +3,7 @@ name: Trigger Repo B
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   notify-repo-b:
@@ -12,6 +13,7 @@ jobs:
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" \
             -H "Authorization: token ${{ secrets.TESTING_REPO_TOKEN }}" \
             https://api.github.com/repos/VonWebsterLabajo/testing-demo/dispatches \
             -d '{"event_type": "trigger-from-calculator-demo"}'

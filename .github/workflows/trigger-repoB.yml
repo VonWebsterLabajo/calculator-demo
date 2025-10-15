@@ -10,13 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Repo B workflow
+        # Need to install jq before using it, as it's not always a default utility
+      - name: Install jq
+        run: sudo apt-get install jq -y
+      - name: Trigger Repo B workflow
         env:
           GH_TOKEN: ${{ secrets.TESTING_REPO_TOKEN }}
         run: |
           echo "Triggering Repo B workflow..."
-          JSON_DATA=$(jq -n --arg et "trigger-from-calculator-demo" '{event_type: $et}')
+		  
+          # Use -c flag on jq to ensure a compact, single-line output
+          JSON_DATA=$(jq -n -c --arg et "trigger-from-calculator-demo" '{event_type: $et}')
+          
+          # Print the data to verify (optional, good for debugging)
+          echo "JSON Payload: $JSON_DATA"
+          
+          # Use single quotes around the -d argument to protect it
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: token ${GH_TOKEN}" \
             https://api.github.com/repos/VonWebsterLabajo/testing-demo/dispatches \
-            -d "$JSON_DATA"
+            -d '$JSON_DATA'

@@ -18,7 +18,6 @@ jobs:
           GH_TOKEN: ${{ secrets.TESTING_REPO_TOKEN }}
         run: |
           echo "Triggering Repo B workflow..."
-		  
           # Use -c flag on jq to ensure a compact, single-line output
           JSON_DATA=$(jq -n -c --arg et "trigger-from-calculator-demo" '{event_type: $et}')
           

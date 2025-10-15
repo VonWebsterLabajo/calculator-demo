@@ -9,25 +9,19 @@ jobs:
   notify-repo-b:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Install jq if it's not present (good for robustness)
-      - name: Install jq utility
-        run: sudo apt-get update && sudo apt-get install jq -y
-      
-      # Step 2: The actual logic
       - name: Trigger Repo B workflow
         env:
           GH_TOKEN: ${{ secrets.TESTING_REPO_TOKEN }}
         run: |
           echo "Triggering Repo B workflow..."
-          # Use -c flag on jq for compact output to avoid JSON parsing errors
-          JSON_DATA=$(jq -n -c --arg et "trigger-from-calculator-demo" '{event_type: $et}')
-		  
-		  # The key must be 'event_type' to match GitHub's API documentation.
+          
+          # Define the event_type variable
+          # Note: We are using the correct key 'event_type' here.
           EVENT_TYPE="trigger-from-calculator-demo"
           
-          # Use single quotes around -d to protect the JSON payload
+          # Use direct JSON injection, which is the most reliable method
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: token ${GH_TOKEN}" \
             https://api.github.com/repos/VonWebsterLabajo/testing-demo/dispatches \
-            -d '{"event_type": "'"${EVENT_TYPE}"'"}' 
+            -d '{"event_type": "'"${EVENT_TYPE}"'"}'
